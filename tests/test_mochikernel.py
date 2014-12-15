@@ -5,15 +5,15 @@
 test_mochi-kernel
 ----------------------------------
 
-Tests for `mochi-kernel` module.
+Tests for `mochikernel` module.
 """
 
 import unittest
 
-from mochi-kernel import mochi-kernel
+from mochikernel import mochikernel
 
 
-class TestMochi-kernel(unittest.TestCase):
+class TestMochiKernel(unittest.TestCase):
 
     def setUp(self):
         pass
