@@ -12,10 +12,12 @@ mochi-kernel
         :target: https://pypi.python.org/pypi/mochi-kernel
 
 
-Python Boilerplate contains all the boilerplate you need to create a Python package.
+a prototype of Jupyter/IPython kernel for moshi:
+
+    https://github.com/i2y/mochi
+
 
 * Free software: BSD license
-* Documentation: https://mochi-kernel.readthedocs.org.
 
 Features
 --------
