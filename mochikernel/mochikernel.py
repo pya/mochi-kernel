@@ -59,12 +59,14 @@ class MochiKernel(Kernel):
             stream_content = {'name': 'stdout', 'text': self.output.read()}
             self.send_response(self.iopub_socket, 'stream', stream_content)
         else:
-            self.output.read()
+            pass
+            #self.output.read()
         if self.error.peek():
             stream_content = {'name': 'stderr', 'text': self.error.read()}
             self.send_response(self.iopub_socket, 'stream', stream_content)
         else:
-            self.error.read()
+            pass
+            #self.error.read()
 
 
         return {'status': 'ok',
