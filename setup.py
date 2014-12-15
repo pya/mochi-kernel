@@ -20,7 +20,7 @@ test_requirements = [
 ]
 
 setup(
-    name='mochi-kernel',
+    name='mochikernel',
     version='0.1.0',
     description='Python Boilerplate contains all the boilerplate you need to create a Python package.',
     long_description=readme + '\n\n' + history,
@@ -28,15 +28,15 @@ setup(
     author_email='bussonniermatthias@gmail.com',
     url='https://github.com/Carreau/mochi-kernel',
     packages=[
-        'mochi-kernel',
+        'mochikernel',
     ],
-    package_dir={'mochi-kernel':
-                 'mochi-kernel'},
+    package_dir={'mochikernel':
+                 'mochikernel'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    keywords='mochi-kernel',
+    keywords='mochikernel',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
