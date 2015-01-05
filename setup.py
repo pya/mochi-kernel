@@ -2,10 +2,19 @@
 # -*- coding: utf-8 -*-
 
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from distutils.core import setup
+from distutils import log
+from distutils.command.install import install
+
+import os
+import json
+
+
+kernel_json = {"argv":["python3","-m","mochikernel", "-f", "{connection_file}"],
+ "display_name":"Mochi",
+ "language":"python",
+ "codemirror_mode":"python"
+}
 
 
 readme = open('README.rst').read()
@@ -18,6 +27,26 @@ requirements = [
 test_requirements = [
     # TODO: put package test requirements here
 ]
+
+#stolen from bash kernel
+
+class install_with_kernelspec(install):
+    def run(self):
+        # Regular installation
+        install.run(self)
+
+        # Now write the kernelspec
+        from IPython.kernel.kernelspec import install_kernel_spec
+        from IPython.utils.tempdir import TemporaryDirectory
+        with TemporaryDirectory() as td:
+            os.chmod(td, 0o755) # Starts off as 700, not user readable
+            with open(os.path.join(td, 'kernel.json'), 'w') as f:
+                json.dump(kernel_json, f, sort_keys=True)
+            # TODO: Copy resources once they're specified
+
+            log.info('Installing IPython kernel spec')
+            install_kernel_spec(td, 'mochi', user=True, replace=True)
+
 
 setup(
     name='mochikernel',
@@ -37,6 +66,7 @@ setup(
     license="BSD",
     zip_safe=False,
     keywords='mochikernel',
+    cmdclass={'install': install_with_kernelspec},
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',

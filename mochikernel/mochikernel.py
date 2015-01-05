@@ -38,23 +38,28 @@ class MochiKernel(Kernel):
     implementation_version = '0.1'
     language = 'python'
     language_version = '0.1'
-    language_info = {'mimetype': 'text/x-python','name':'mochi'}
+    language_info = {'mimetype': 'text/x-python','name':'python'}
     banner = "the mochi kernel"
 
     def __init__(self, *args, **kwargs):
         self.output = FifoBuffer()
         self.error = FifoBuffer()
-        mochi.current_output_port = mochi.OutputPort(self.output)
-        mochi.current_error_port = mochi.OutputPort(self.error)
-        #ip = get_ipython();
-        #print(ip)
+        # sys.std* are zmqstreams
+        # not perfect yet though to use fifo.
+        # Shoudl find a way to use zmq stream directly
+        self.orig_stdout = sys.stdout
+        self.orig_stderr = sys.stderr
+        sys.stdout = self.output;
+        sys.stderr = self.error;
+        mochi.current_output_port = mochi.OutputPort(sys.stdout)
+        mochi.current_error_port = mochi.OutputPort(sys.stderr)
         mochi.init()
 
         super().__init__(*args, **kwargs)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
-        response = mochi.eval_code_block(code)
+        mochi.eval_code_block(code)
         if not silent:
             stream_content = {'name': 'stdout', 'text': self.output.read()}
             self.send_response(self.iopub_socket, 'stream', stream_content)
