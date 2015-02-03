@@ -1,10 +1,14 @@
-from IPython.kernel.zmq.kernelbase import Kernel
-import mochi.mochi as mochi
-import sys
 import io
-
-
 from io import StringIO
+import sys
+
+import mochi.core.builtins as mochi_builtins
+from mochi.core import init as mochi_init
+
+from IPython.kernel.zmq.kernelbase import Kernel
+
+
+
 class FifoBuffer(io.TextIOBase):
     def __init__(self):
         self.buf = StringIO()
@@ -16,11 +20,11 @@ class FifoBuffer(io.TextIOBase):
         l = self.len
         self.len=0
         res = self.buf.read(l)
-        
+
         self.buf.seek(0)
         return res
-        
-        
+
+
 
     def write(self, arg):
         self.len = self.len + self.buf.write(arg)
@@ -51,15 +55,15 @@ class MochiKernel(Kernel):
         self.orig_stderr = sys.stderr
         sys.stdout = self.output;
         sys.stderr = self.error;
-        mochi.current_output_port = mochi.OutputPort(sys.stdout)
-        mochi.current_error_port = mochi.OutputPort(sys.stderr)
-        mochi.init()
+        mochi_builtins.current_output_port = mochi_builtins.OutputPort(sys.stdout)
+        mochi_builtins.current_error_port = mochi_builtins.OutputPort(sys.stderr)
+        mochi_init()
 
         super().__init__(*args, **kwargs)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
-        mochi.eval_code_block(code)
+        mochi_builtins.eval_code_block(code)
         if not silent:
             stream_content = {'name': 'stdout', 'text': self.output.read()}
             self.send_response(self.iopub_socket, 'stream', stream_content)
