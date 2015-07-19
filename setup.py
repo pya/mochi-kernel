@@ -50,8 +50,8 @@ class install_with_kernelspec(install):
 
 setup(
     name='mochikernel',
-    version='0.2.0',
-    description='Python Boilerplate contains all the boilerplate you need to create a Python package.',
+    version='0.2.2',
+    description='An IPython kernel for Mochi',
     long_description=readme + '\n\n' + history,
     author='Matthias Bussonnier, Mike Müller',
     author_email='bussonniermatthias@gmail.com, pymmueller@gmail.com',

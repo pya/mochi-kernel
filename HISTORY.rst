@@ -8,7 +8,7 @@ History
 
 * First release on PyPI.
 
-0.2.0 (2015-07-19)
+0.2.2 (2015-07-19)
 ---------------------
 
 * New import structure.
