@@ -8,7 +8,6 @@ from mochi.core import init as mochi_init
 from IPython.kernel.zmq.kernelbase import Kernel
 
 
-
 class FifoBuffer(io.TextIOBase):
     def __init__(self):
         self.buf = StringIO()
@@ -24,8 +23,6 @@ class FifoBuffer(io.TextIOBase):
         self.buf.seek(0)
         return res
 
-
-
     def write(self, arg):
         self.len = self.len + self.buf.write(arg)
 
@@ -39,9 +36,9 @@ class FifoBuffer(io.TextIOBase):
 
 class MochiKernel(Kernel):
     implementation = 'Mochi'
-    implementation_version = '0.1'
+    implementation_version = '0.2.2'
     language = 'python'
-    language_version = '0.1'
+    language_version = '0.2.2'
     language_info = {'mimetype': 'text/x-python','name':'python'}
     banner = "the mochi kernel"
 
@@ -50,11 +47,11 @@ class MochiKernel(Kernel):
         self.error = FifoBuffer()
         # sys.std* are zmqstreams
         # not perfect yet though to use fifo.
-        # Shoudl find a way to use zmq stream directly
+        # Should find a way to use zmq stream directly
         self.orig_stdout = sys.stdout
         self.orig_stderr = sys.stderr
-        sys.stdout = self.output;
-        sys.stderr = self.error;
+        sys.stdout = self.output
+        sys.stderr = self.error
         mochi_builtins.current_output_port = mochi_builtins.OutputPort(sys.stdout)
         mochi_builtins.current_error_port = mochi_builtins.OutputPort(sys.stderr)
         mochi_init()
